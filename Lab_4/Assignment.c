@@ -1,55 +1,45 @@
-#include <stdio.h>
-#include <limits.h>
+#include<stdio.h>
+#include<limits.h>
+#define Max 100
 
-#define MAX 10
+int costMatrix[Max][Max];
+int n ;
+int visited[Max];
+int minCost = INT_MAX;
 
-int costMatrix[MAX][MAX];  // Cost matrix for assignment problem
-int n;                     // Number of tasks/workers
-int visited[MAX];          // Tracks visited workers
-int minCost = INT_MAX;     // Stores the minimum assignment cost
-
-// Recursive function to solve the Assignment Problem
-void solveAssignment(int task, int currentCost) {
-    // Base case: All tasks are assigned
-    if (task == n) {
-        if (currentCost < minCost) {
-            minCost = currentCost;  // Update the minimum cost
+void cost(int task , int currentCost){
+    if(task == n){
+        if(currentCost < minCost){
+            minCost = currentCost;
         }
         return;
     }
 
-    // Try assigning the current task to all available workers
-    for (int i = 0; i < n; i++) {
-        if (!visited[i]) {  // Check if worker `i` is not already assigned
-            visited[i] = 1; // Mark worker `i` as assigned
-            solveAssignment(task + 1, currentCost + costMatrix[task][i]);
-            visited[i] = 0; // Backtrack to try other assignments
+    for(int i = 0 ; i < n ; i++){
+        if(visited[i] == 0){
+            visited[i] = 1;
+            cost(task+1, currentCost + costMatrix[task][i]);
+            visited[i] = 0;
         }
     }
 }
-int main() {
-    // Input number of tasks/workers
-    printf("Enter the number of tasks/workers: ");
-    scanf("%d", &n);
 
-    // Input cost matrix
-    printf("Enter the cost matrix:\n");
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
+void main(){
+    printf("enter the number of tasks/worrkers : ");
+    scanf("%d",&n);
+    printf("Enter the cost matrix : \n");
+    for(int i = 0 ; i < n ;i++){
+        for( int j = 0 ; j < n ; j++){
             scanf("%d", &costMatrix[i][j]);
         }
     }
 
-    // Initialize visited array
-    for (int i = 0; i < n; i++) {
-        visited[i] = 0;
+    // making the visited array to 0
+    for( int i = 0 ; i < n ; i++){
+        visited[i] = 0; 
     }
 
-    // Solve the problem starting with the first task
-    solveAssignment(0, 0);
+    cost(0,0);
+    printf("The minimum cost is : %d", minCost);
 
-    // Output the minimum cost
-    printf("The minimum assignment cost is: %d\n", minCost);
-
-    return 0;
 }
