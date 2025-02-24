@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+
+/*printing for an array*/
 void printArray(int *A, int n)
 {
     for (int i = 0; i < n; i++)
@@ -9,26 +11,28 @@ void printArray(int *A, int n)
     printf("\n");
 }
 
+
+/* The major helper function for Quick Sort Function */
 int partition(int A[], int low, int high)
-{
-    int pivot = A[low];
+{ 
+    int pivot = A[low]; // Making the pivot point where the things would happen i.e. the elements smaller them would go towards the left and the elements bigger then them would go towards the right 
     int i = low + 1;
     int j = high;
     int temp;
 
     do
     {
-        while (A[i] <= pivot)
+        while (A[i] <= pivot) // basically the i pointer checks for smaller numbers 
         {
             i++;
         }
 
-        while (A[j] > pivot)
+        while (A[j] > pivot) // bascially checking for the the numbers which are greater than pivot point 
         {
             j--;
         }
 
-        if (i < j)
+        if (i < j) // if i is less than j then swap the elements
         {
             temp = A[i];
             A[i] = A[j];
