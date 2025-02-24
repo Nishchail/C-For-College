@@ -1,55 +1,71 @@
 #include <stdio.h>
 
-// Function to swap two elements
-void swap(int *a, int *b) {
-    int temp = *a;
-    *a = *b;
-    *b = temp;
-}
-
-// Partition function for Quick Sort
-int partition(int arr[], int low, int high) {
-    int pivot = arr[high];  // Choosing last element as pivot
-    int i = (low - 1);      // Index for smaller element
-
-    for (int j = low; j < high; j++) {
-        if (arr[j] < pivot) { // If current element is smaller than pivot
-            i++;
-            swap(&arr[i], &arr[j]);
-        }
+void printArray(int *A, int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        printf("%d ", A[i]);
     }
-    swap(&arr[i + 1], &arr[high]); // Place pivot at correct position
-    return (i + 1);
-}
-
-// Quick Sort function
-void quickSort(int arr[], int low, int high) {
-    if (low < high) {
-        int pi = partition(arr, low, high);  // Partitioning index
-        quickSort(arr, low, pi - 1);         // Sort left part
-        quickSort(arr, pi + 1, high);        // Sort right part
-    }
-}
-
-// Function to print the array
-void printArray(int arr[], int size) {
-    for (int i = 0; i < size; i++)
-        printf("%d ", arr[i]);
     printf("\n");
 }
 
-// Main function
-int main() {
-    int arr[] = {10, 7, 8, 9, 1, 5};
-    int n = sizeof(arr) / sizeof(arr[0]);
+int partition(int A[], int low, int high)
+{
+    int pivot = A[low];
+    int i = low + 1;
+    int j = high;
+    int temp;
 
-    printf("Original array: ");
-    printArray(arr, n);
+    do
+    {
+        while (A[i] <= pivot)
+        {
+            i++;
+        }
 
-    quickSort(arr, 0, n - 1);
+        while (A[j] > pivot)
+        {
+            j--;
+        }
 
-    printf("Sorted array using Quick Sort: ");
-    printArray(arr, n);
+        if (i < j)
+        {
+            temp = A[i];
+            A[i] = A[j];
+            A[j] = temp;
+        }
+    } while (i < j);
 
+    // Swap A[low] and A[j]
+    temp = A[low];
+    A[low] = A[j];
+    A[j] = temp;
+    return j;
+}
+
+void quickSort(int A[], int low, int high)
+{
+    int partitionIndex; // Index of pivot after partition
+
+    if (low < high)
+    {
+        partitionIndex = partition(A, low, high); 
+        quickSort(A, low, partitionIndex - 1);  // sort left subarray 
+        quickSort(A, partitionIndex + 1, high); // sort right subarray
+    }
+}
+
+int main()
+{
+    //int A[] = {3, 5, 2, 13, 12, 3, 2, 13, 45};
+    int A[] = {9, 4, 4, 8, 7, 5, 6};
+    // 3, 5, 2, 13, 12, 3, 2, 13, 45
+    // 3, 2, 2, 13i, 12, 3j, 5, 13, 45
+    // 3, 2, 2, 3j, 12i, 13, 5, 13, 45 --> first call to partition returns 3
+    int n = 9;
+    n =7;
+    printArray(A, n);
+    quickSort(A, 0, n - 1);
+    printArray(A, n);
     return 0;
 }
